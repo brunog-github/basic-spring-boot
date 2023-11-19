@@ -42,7 +42,7 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
     public void deleteAllStudents() {
-        Long studentsExists = studentRepository.count();
+        long studentsExists = studentRepository.count();
         if (studentsExists > 0) {
             studentRepository.deleteAll();
         } else {
