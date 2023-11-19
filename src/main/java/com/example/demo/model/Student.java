@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
     @Id
@@ -22,20 +26,6 @@ public class Student {
     @Transient
     private Integer age;
 
-    public Student() { }
-
-    public Student(String name, String email, LocalDate dateOfBirth) {
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Student(UUID id, String name, String email, LocalDate dateOfBirth) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
     public Integer getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
