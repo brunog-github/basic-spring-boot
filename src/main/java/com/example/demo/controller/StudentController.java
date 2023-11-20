@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RequestStudentDto;
 import com.example.demo.model.Student;
 import com.example.demo.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +25,21 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public ResponseEntity<List<Student>> getStudents() {
+        return ResponseEntity.ok(studentService.getStudents());
     }
 
     @PostMapping("/create")
-    public void addNewStudent(@RequestBody Student student) {
+    public ResponseEntity<String> addNewStudent(@RequestBody @Valid RequestStudentDto requestStudentDto) {
+        Student student = new Student(requestStudentDto);
         studentService.addNewStudent(student);
+        return ResponseEntity.status(HttpStatus.CREATED).body("created.");
     }
 
     @DeleteMapping("/delete/{studentId}")
-    public void deleteStudent(@PathVariable("studentId") UUID id) {
+    public ResponseEntity<String> deleteStudent(@PathVariable("studentId") UUID id) {
         studentService.deleteStudent(id);
+        return ResponseEntity.status(HttpStatus.OK).body("student has been deleted.");
     }
 
     @DeleteMapping("/deleteAll")
@@ -40,10 +48,11 @@ public class StudentController {
     }
 
     @PutMapping("/update/{studentId}")
-    public void updateStudent(@PathVariable("studentId") UUID id,
+    public ResponseEntity<String> updateStudent(@PathVariable("studentId") UUID id,
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String email) {
 
         studentService.updateStudent(id, name, email);
+        return ResponseEntity.status(HttpStatus.OK).body("student has been updated.");
     }
 }
